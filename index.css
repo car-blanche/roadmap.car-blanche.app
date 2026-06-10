@@ -1,0 +1,462 @@
+@import "tailwindcss";
+
+/* =========================================================
+   ЦВЕТА И ТЕМАТИЧЕСКИЕ ПЕРЕМЕННЫЕ
+   --c-*    = цвета
+   --r-*    = форма (border-radius)
+   --s-*    = тени
+   --ring-* = focus / hover
+   ========================================================= */
+
+:root,
+html[data-theme="dark"] {
+  /* Цвета */
+  --c-canvas:        #0d1117;
+  --c-canvas-inset:  #010409;
+  --c-canvas-subtle: #161b22;
+  --c-canvas-elev:   #1c2128;
+  --c-border:        #30363d;
+  --c-border-muted:  #21262d;
+  --c-fg:            #e6edf3;
+  --c-fg-soft:       #c9d1d9;
+  --c-fg-muted:      #8b949e;
+  --c-fg-subtle:     #6e7681;
+  --c-accent:        #2f81f7;
+  --c-accent-hover:  #58a6ff;
+  --c-success:       #3fb950;
+  --c-attention:     #d29922;
+  --c-danger:        #f85149;
+  --c-done:          #a371f7;
+  --c-overlay:       rgba(31, 111, 235, 0.18);
+  --c-overlay-soft:  rgba(31, 111, 235, 0.08);
+  --c-overlay-hover: rgba(31, 111, 235, 0.14);
+  --c-scroll-track:  #0d1117;
+  --c-scroll-thumb:  #30363d;
+
+  /* Форма и тени — DARK = острые, без теней */
+  --r-card: 0.375rem;       /* 6px */
+  --r-btn:  0.375rem;
+  --s-card: 0 0 0 0 transparent;
+  --s-card-hover: 0 0 0 1px rgba(88, 166, 255, 0.25);
+  --s-elev: 0 8px 24px rgba(1, 4, 9, 0.6);
+  --ring-focus: 0 0 0 2px rgba(88, 166, 255, 0.4);
+  --hover-lift: translateY(0);
+}
+
+html[data-theme="dim"] {
+  --c-canvas:        #22272e;
+  --c-canvas-inset:  #1c2128;
+  --c-canvas-subtle: #2d333b;
+  --c-canvas-elev:   #2d333b;
+  --c-border:        #444c56;
+  --c-border-muted:  #373e47;
+  --c-fg:            #cdd9e5;
+  --c-fg-soft:       #adbac7;
+  --c-fg-muted:      #768390;
+  --c-fg-subtle:     #636e7b;
+  --c-accent:        #539bf5;
+  --c-accent-hover:  #6cb6ff;
+  --c-success:       #57ab5a;
+  --c-attention:     #c69026;
+  --c-danger:        #e5534b;
+  --c-done:          #986ee2;
+  --c-overlay:       rgba(83, 155, 245, 0.18);
+  --c-overlay-soft:  rgba(83, 155, 245, 0.08);
+  --c-overlay-hover: rgba(83, 155, 245, 0.14);
+  --c-scroll-track:  #22272e;
+  --c-scroll-thumb:  #444c56;
+
+  /* DIM — средние углы и мягкие тени */
+  --r-card: 0.5rem;          /* 8px */
+  --r-btn:  0.5rem;
+  --s-card: 0 1px 0 rgba(0,0,0,0.08);
+  --s-card-hover: 0 4px 12px rgba(0,0,0,0.3);
+  --s-elev: 0 12px 32px rgba(0,0,0,0.45);
+  --ring-focus: 0 0 0 2px rgba(108, 182, 255, 0.4);
+  --hover-lift: translateY(-1px);
+}
+
+html[data-theme="light"] {
+  --c-canvas:        #ffffff;
+  --c-canvas-inset:  #f6f8fa;
+  --c-canvas-subtle: #f6f8fa;
+  --c-canvas-elev:   #ffffff;
+  --c-border:        #d1d9e0;
+  --c-border-muted:  #eaeef2;
+  --c-fg:            #1f2328;
+  --c-fg-soft:       #1f2328;
+  --c-fg-muted:      #59636e;
+  --c-fg-subtle:     #818b98;
+  --c-accent:        #0969da;
+  --c-accent-hover:  #0969da;
+  --c-success:       #1a7f37;
+  --c-attention:     #9a6700;
+  --c-danger:        #cf222e;
+  --c-done:          #8250df;
+  --c-overlay:       rgba(9, 105, 218, 0.14);
+  --c-overlay-soft:  rgba(9, 105, 218, 0.06);
+  --c-overlay-hover: rgba(9, 105, 218, 0.10);
+  --c-scroll-track:  #ffffff;
+  --c-scroll-thumb:  #d0d7de;
+
+  /* LIGHT — плавные углы и заметные тени для воздуха */
+  --r-card: 0.75rem;          /* 12px */
+  --r-btn:  0.5rem;
+  --s-card: 0 1px 2px rgba(31, 35, 40, 0.04), 0 1px 1px rgba(31, 35, 40, 0.04);
+  --s-card-hover: 0 8px 24px rgba(140, 149, 159, 0.2);
+  --s-elev: 0 16px 48px rgba(31, 35, 40, 0.12);
+  --ring-focus: 0 0 0 2px rgba(9, 105, 218, 0.3);
+  --hover-lift: translateY(-2px);
+}
+
+/* ========== Базовые стили ========== */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--c-canvas);
+  transition: background-color 0.25s ease;
+  --d-px: 1;
+}
+html[data-density="compact"] { --d-px: 0.75; font-size: 14.5px; }
+html[data-density="compact"] .py-3 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+html[data-density="compact"] .py-4 { padding-top: 0.6rem; padding-bottom: 0.6rem; }
+html[data-density="compact"] .py-6 { padding-top: 1rem; padding-bottom: 1rem; }
+html[data-density="compact"] .py-8 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+html[data-density="compact"] .gap-6 { gap: 1rem; }
+html[data-density="compact"] .gap-8 { gap: 1.25rem; }
+html[data-density="compact"] .space-y-8 > * + * { margin-top: 1.25rem; }
+html[data-density="compact"] .space-y-6 > * + * { margin-top: 1rem; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--c-fg);
+  background-color: var(--c-canvas);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--c-scroll-track); }
+::-webkit-scrollbar-thumb {
+  background: var(--c-scroll-thumb);
+  border-radius: 8px;
+  border: 3px solid var(--c-scroll-track);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--c-fg-subtle); }
+
+.gh-link { color: var(--c-accent); }
+.gh-link:hover { color: var(--c-accent-hover); text-decoration: underline; }
+
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] > summary .chev { transform: rotate(90deg); }
+.chev { transition: transform 0.15s ease; }
+
+.gh-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 85%;
+  padding: 0.15em 0.4em;
+  background: rgba(110, 118, 129, 0.2);
+  border-radius: 6px;
+  color: var(--c-fg);
+}
+
+.gh-bg-grid {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(139, 148, 158, 0.08) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* =========================================================
+   ПЕРЕОПРЕДЕЛЕНИЯ TAILWIND для тем DIM и LIGHT
+   ========================================================= */
+
+/* ---- Backgrounds ---- */
+html[data-theme="dim"] .bg-\[\#0d1117\],
+html[data-theme="light"] .bg-\[\#0d1117\] { background-color: var(--c-canvas) !important; }
+html[data-theme="dim"] .bg-\[\#010409\],
+html[data-theme="light"] .bg-\[\#010409\] { background-color: var(--c-canvas-inset) !important; }
+html[data-theme="dim"] .bg-\[\#161b22\],
+html[data-theme="light"] .bg-\[\#161b22\] { background-color: var(--c-canvas-subtle) !important; }
+html[data-theme="dim"] .bg-\[\#1c2128\],
+html[data-theme="light"] .bg-\[\#1c2128\] { background-color: var(--c-canvas-elev) !important; }
+html[data-theme="dim"] .bg-\[\#21262d\],
+html[data-theme="light"] .bg-\[\#21262d\] { background-color: var(--c-border-muted) !important; }
+html[data-theme="dim"] .bg-\[\#30363d\],
+html[data-theme="light"] .bg-\[\#30363d\] { background-color: var(--c-border) !important; }
+html[data-theme="dim"] .bg-\[\#07070b\],
+html[data-theme="light"] .bg-\[\#07070b\] { background-color: var(--c-canvas-inset) !important; }
+
+/* Полу-прозрачные overlay-фоны */
+html[data-theme="dim"] .bg-\[\#1f6feb0d\],
+html[data-theme="light"] .bg-\[\#1f6feb0d\] { background-color: var(--c-overlay-soft) !important; }
+html[data-theme="dim"] .bg-\[\#1f6feb1f\],
+html[data-theme="light"] .bg-\[\#1f6feb1f\] { background-color: var(--c-overlay-hover) !important; }
+html[data-theme="dim"] .bg-\[\#1f6feb33\],
+html[data-theme="light"] .bg-\[\#1f6feb33\] { background-color: var(--c-overlay) !important; }
+html[data-theme="dim"] .bg-\[\#388bfd1a\],
+html[data-theme="light"] .bg-\[\#388bfd1a\] { background-color: var(--c-overlay-soft) !important; }
+html[data-theme="dim"] .bg-\[\#388bfd33\],
+html[data-theme="light"] .bg-\[\#388bfd33\] { background-color: var(--c-overlay-hover) !important; }
+html[data-theme="dim"] .bg-\[\#1f6feb08\],
+html[data-theme="light"] .bg-\[\#1f6feb08\] { background-color: var(--c-overlay-soft) !important; }
+
+/* Borders */
+html[data-theme="dim"] .border-\[\#30363d\],
+html[data-theme="light"] .border-\[\#30363d\] { border-color: var(--c-border) !important; }
+html[data-theme="dim"] .border-\[\#21262d\],
+html[data-theme="light"] .border-\[\#21262d\] { border-color: var(--c-border-muted) !important; }
+
+/* Text */
+html[data-theme="dim"] .text-\[\#e6edf3\],
+html[data-theme="light"] .text-\[\#e6edf3\] { color: var(--c-fg) !important; }
+html[data-theme="dim"] .text-\[\#c9d1d9\],
+html[data-theme="light"] .text-\[\#c9d1d9\] { color: var(--c-fg-soft) !important; }
+html[data-theme="dim"] .text-\[\#8b949e\],
+html[data-theme="light"] .text-\[\#8b949e\] { color: var(--c-fg-muted) !important; }
+html[data-theme="dim"] .text-\[\#6e7681\],
+html[data-theme="light"] .text-\[\#6e7681\] { color: var(--c-fg-subtle) !important; }
+
+/* Accent / link */
+html[data-theme="light"] .text-\[\#2f81f7\],
+html[data-theme="dim"]   .text-\[\#2f81f7\] { color: var(--c-accent) !important; }
+html[data-theme="light"] .text-\[\#58a6ff\],
+html[data-theme="dim"]   .text-\[\#58a6ff\] { color: var(--c-accent) !important; }
+
+/* Divide */
+html[data-theme="dim"] .divide-\[\#21262d\] > * + *,
+html[data-theme="light"] .divide-\[\#21262d\] > * + * { border-color: var(--c-border-muted) !important; }
+
+/* Hover bg */
+html[data-theme="dim"] .hover\:bg-\[\#30363d\]:hover,
+html[data-theme="light"] .hover\:bg-\[\#30363d\]:hover { background-color: var(--c-border) !important; }
+html[data-theme="dim"] .hover\:bg-\[\#161b22\]:hover,
+html[data-theme="light"] .hover\:bg-\[\#161b22\]:hover { background-color: var(--c-canvas-subtle) !important; }
+html[data-theme="dim"] .hover\:bg-\[\#21262d\]:hover,
+html[data-theme="light"] .hover\:bg-\[\#21262d\]:hover { background-color: var(--c-border-muted) !important; }
+html[data-theme="dim"] .hover\:bg-\[\#1c2128\]:hover,
+html[data-theme="light"] .hover\:bg-\[\#1c2128\]:hover { background-color: var(--c-canvas-subtle) !important; }
+html[data-theme="dim"] .hover\:bg-\[\#1f6feb0d\]:hover,
+html[data-theme="light"] .hover\:bg-\[\#1f6feb0d\]:hover { background-color: var(--c-overlay-soft) !important; }
+html[data-theme="dim"] .hover\:bg-\[\#1f6feb1f\]:hover,
+html[data-theme="light"] .hover\:bg-\[\#1f6feb1f\]:hover { background-color: var(--c-overlay-hover) !important; }
+html[data-theme="dim"] .hover\:bg-\[\#388bfd33\]:hover,
+html[data-theme="light"] .hover\:bg-\[\#388bfd33\]:hover { background-color: var(--c-overlay) !important; }
+
+html[data-theme="light"] .hover\:border-\[\#58a6ff66\]:hover { border-color: rgba(9, 105, 218, 0.4) !important; }
+html[data-theme="light"] .hover\:text-\[\#2f81f7\]:hover { color: var(--c-accent) !important; }
+html[data-theme="light"] .hover\:text-\[\#58a6ff\]:hover { color: var(--c-accent) !important; }
+html[data-theme="light"] .hover\:text-\[\#e6edf3\]:hover { color: var(--c-fg) !important; }
+html[data-theme="dim"] .hover\:text-\[\#2f81f7\]:hover { color: var(--c-accent) !important; }
+html[data-theme="dim"] .hover\:text-\[\#e6edf3\]:hover { color: var(--c-fg) !important; }
+
+/* =========================================================
+   LIGHT THEME — критические фиксы (текст / градиенты)
+   ========================================================= */
+
+/* Градиенты hero-секций: смягчаем, чтобы текст оставался читаемым */
+html[data-theme="light"] .from-\[\#0d1117\] { --tw-gradient-from: #ffffff !important; }
+html[data-theme="light"] .via-\[\#1c2128\]  { --tw-gradient-via:  #f6f8fa !important; }
+html[data-theme="light"] .to-\[\#161b22\]   { --tw-gradient-to:   #f6f8fa !important; }
+html[data-theme="light"] .via-\[\#0d1117\]  { --tw-gradient-via:  #ffffff !important; }
+
+html[data-theme="light"] .from-\[\#1f6feb1f\] { --tw-gradient-from: rgba(9, 105, 218, 0.06) !important; }
+html[data-theme="light"] .to-\[\#a371f71f\]   { --tw-gradient-to:   rgba(130, 80, 223, 0.06) !important; }
+html[data-theme="light"] .from-\[\#1f6feb33\] { --tw-gradient-from: rgba(9, 105, 218, 0.10) !important; }
+html[data-theme="light"] .to-\[\#a371f733\]   { --tw-gradient-to:   rgba(130, 80, 223, 0.10) !important; }
+html[data-theme="light"] .from-\[\#a371f71f\] { --tw-gradient-from: rgba(130, 80, 223, 0.07) !important; }
+html[data-theme="light"] .from-\[\#a371f722\] { --tw-gradient-from: rgba(130, 80, 223, 0.10) !important; }
+html[data-theme="light"] .to-\[\#db61a222\]   { --tw-gradient-to:   rgba(219, 97, 162, 0.08) !important; }
+html[data-theme="light"] .to-\[\#3fb9501f\]   { --tw-gradient-to:   rgba(26, 127, 55, 0.08) !important; }
+html[data-theme="light"] .to-\[\#58a6ff1f\]   { --tw-gradient-to:   rgba(9, 105, 218, 0.07) !important; }
+html[data-theme="light"] .from-\[\#58a6ff22\] { --tw-gradient-from: rgba(9, 105, 218, 0.10) !important; }
+html[data-theme="light"] .from-\[\#3fb95022\] { --tw-gradient-from: rgba(26, 127, 55, 0.10) !important; }
+html[data-theme="light"] .from-\[\#db61a222\] { --tw-gradient-from: rgba(219, 97, 162, 0.10) !important; }
+html[data-theme="light"] .to-\[\#a371f722\]   { --tw-gradient-to:   rgba(130, 80, 223, 0.10) !important; }
+
+/* Decorative blur-blobs — приглушаем чтобы не «выжигать» текст */
+html[data-theme="light"] .blur-3xl { opacity: 0.35 !important; }
+
+/* Gradient text — в светлой теме просто синий, иначе невидим */
+html[data-theme="light"] .bg-clip-text.text-transparent {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  color: var(--c-accent) !important;
+  -webkit-text-fill-color: var(--c-accent) !important;
+}
+
+/* Кнопки текстовые с явным белым → тёмные на светлом */
+html[data-theme="light"] .text-white { color: #ffffff !important; }
+/* Но если белый текст сидит на тёмной кнопке (bg-[#238636]) — оставляем белым */
+
+/* Code editor / inset blocks */
+html[data-theme="light"] .gh-code {
+  background: rgba(175, 184, 193, 0.2) !important;
+  color: var(--c-fg) !important;
+}
+html[data-theme="light"] kbd {
+  background-color: var(--c-canvas-subtle) !important;
+  color: var(--c-fg) !important;
+  border-color: var(--c-border) !important;
+}
+
+/* Header — лёгкий ховер на пунктах верхнего меню */
+html[data-theme="light"] header.sticky { background-color: var(--c-canvas) !important; }
+html[data-theme="light"] header nav button { color: var(--c-fg) !important; }
+
+/* Repo-header tab active underline color */
+html[data-theme="light"] .border-\[\#f78166\] { border-color: var(--c-accent) !important; }
+
+/* Light theme: bg-[#0d1117]/60 → нужен светлый, иначе не виден */
+html[data-theme="light"] .bg-\[\#0d1117\]\/60 { background-color: rgba(255, 255, 255, 0.7) !important; }
+
+/* Light theme: tone down dark divisions inside cards */
+html[data-theme="light"] .border-t.border-\[\#30363d\] { border-color: var(--c-border) !important; }
+
+/* =========================================================
+   PER-THEME DESIGN — формы, тени, hover
+   ========================================================= */
+
+/* Универсальные классы для карточек/кнопок */
+html[data-theme="light"] .rounded-md,
+html[data-theme="dim"]   .rounded-md   { border-radius: var(--r-card); }
+html[data-theme="light"] .rounded-lg,
+html[data-theme="dim"]   .rounded-lg   { border-radius: calc(var(--r-card) + 0.25rem); }
+html[data-theme="light"] .rounded-xl,
+html[data-theme="dim"]   .rounded-xl   { border-radius: calc(var(--r-card) + 0.5rem); }
+
+/* Карточки получают тень только в LIGHT/DIM, в DARK — чистый стиль с бордером */
+html[data-theme="light"] .bg-\[\#161b22\],
+html[data-theme="light"] .bg-\[\#0d1117\] {
+  box-shadow: var(--s-card);
+}
+html[data-theme="dim"] .bg-\[\#161b22\] {
+  box-shadow: var(--s-card);
+}
+
+/* Универсальный hover для интерактивных кнопок */
+button, a {
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+              color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Карточки на hover слегка «приподнимаются» в LIGHT/DIM */
+html[data-theme="light"] .hover\:border-\[\#58a6ff66\]:hover,
+html[data-theme="dim"]   .hover\:border-\[\#58a6ff66\]:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--s-card-hover);
+}
+
+/* Focus ring более выраженный */
+html[data-theme="light"] *:focus-visible,
+html[data-theme="dim"]   *:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
+
+/* =========================================================
+   VIEW TRANSITIONS — плавная смена страниц / темы
+   ========================================================= */
+
+main { animation: viewIn 0.2s ease-out; }
+
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Тонкие усиления интерактивности */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+
+/* =========================================================
+   PREMIUM POLISH — то что делает сайт лучше GitHub
+   ========================================================= */
+
+/* 1. Плавный fade-in для динамических списков */
+@keyframes listIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+main > * { animation: listIn 0.22s ease-out backwards; }
+main > *:nth-child(1) { animation-delay: 0.00s; }
+main > *:nth-child(2) { animation-delay: 0.04s; }
+main > *:nth-child(3) { animation-delay: 0.08s; }
+main > *:nth-child(4) { animation-delay: 0.12s; }
+
+/* 2. Карточки в LIGHT/DIM получают «дышащий» эффект на hover */
+html[data-theme="light"] [class*="bg-[#161b22]"]:hover,
+html[data-theme="dim"]   [class*="bg-[#161b22]"]:hover {
+  transition: all 0.18s ease;
+}
+
+/* 3. Активная навигация — мягкий «glow» в Light */
+html[data-theme="light"] nav button[class*="bg-[#21262d]"] {
+  background-color: rgba(9, 105, 218, 0.08) !important;
+  color: var(--c-accent) !important;
+  box-shadow: inset 0 0 0 1px rgba(9, 105, 218, 0.15);
+}
+
+/* 4. Active tab underline — в Light тема его делаем толще и в акцентном цвете */
+html[data-theme="light"] .border-\[\#f78166\] {
+  border-color: var(--c-accent) !important;
+  border-bottom-width: 3px !important;
+}
+
+/* 5. Все ссылки приобретают тонкое подчёркивание-анимацию в Light */
+html[data-theme="light"] a:not([class*="rounded"]):not([class*="border"]):not(.no-underline) {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.2s ease;
+}
+html[data-theme="light"] a:not([class*="rounded"]):not([class*="border"]):not(.no-underline):hover {
+  background-size: 100% 1px;
+}
+
+/* 6. Светлая тема: «карточки» Pinned section и стат-блоков визуально приподнимаем */
+html[data-theme="light"] [class*="bg-[#0d1117]"][class*="border"] {
+  background-color: #ffffff !important;
+}
+
+/* 7. Mini-fix: в pinned section и других местах bg-[#0d1117]/60 теперь читаемый */
+html[data-theme="light"] [class*="bg-\[\#0d1117\]\/60"] {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(8px);
+}
+
+/* 8. Smooth theme transition для cards и текста */
+[class*="bg-["], [class*="border-["], [class*="text-["] {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* =========================================================
+   FEATURED секции — лёгкий ambient-glow для открытых блоков
+   ========================================================= */
+.featured-block {
+  position: relative;
+}
+.featured-block::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(88, 166, 255, 0.3), rgba(163, 113, 247, 0.3), rgba(240, 136, 62, 0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.featured-block:hover::before { opacity: 1; }
