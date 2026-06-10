@@ -29,3 +29,6 @@
     "vite-plugin-singlefile": "2.3.0"
   }
 }
+"scripts": {  
+  "build": "react-scripts build"  
+}  
