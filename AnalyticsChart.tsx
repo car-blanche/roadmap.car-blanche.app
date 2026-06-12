@@ -165,7 +165,7 @@ export function AnalyticsChart() {
               <span className="font-mono text-[10px] text-[#8b949e]">
                 {hoveredBar !== null
                   ? `${monthLabels[hoveredBar]} · ${activityData[hoveredBar]} ${lang === "ru" ? "поездок/день" : "rides/day"}`
-                  : `${lang === "ru" ? "максимум" : "peak"}: ${maxBar} ${lang === "ru" ? "пое��док/день" : "rides/day"}`}
+                  : `${lang === "ru" ? "максимум" : "peak"}: ${maxBar} ${lang === "ru" ? "поездок/день" : "rides/day"}`}
               </span>
             </div>
 
